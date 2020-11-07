@@ -32,8 +32,6 @@ class Application:
         self.d_update = self.info['lastUpdate']
 
         self.d_update = datetime.datetime.strptime(self.d_update, "%Y-%m-%dT%H:%M:%S.000Z")
-        # self.d_update = self.d_update.strftime('%c')
-
 
     def frames(self):
         self.fr_update = Frame(self.root, width=835, height=50, bg="#ffffff", relief='flat')
@@ -53,7 +51,7 @@ class Application:
 
     def labels(self):
         # UPDATE
-        self.label_update = Label(self.fr_update, text=self.d_update, width=30, height=1, 
+        self.label_update = Label(self.fr_update, text="Update in: " + str(self.d_update), width=30, height=1, 
                                   pady=7, padx=0, relief="flat", anchor=CENTER,
                                   font='Helvetica 8 bold', bg="#DCDCDC", fg="#000000")
         self.label_update.grid(row=0, column=0, pady=1, padx=13)
@@ -138,5 +136,27 @@ class Application:
         self.select_combo = ttk.Combobox(self.select_box, width=20, font='Arial 12 bold')
         self.select_combo.grid(row=0, column=1, padx=0, pady=1)
         self.select_combo['values'] = self.coutry_combo
+
+        self.select_combo.bind("<<ComboboxSelected>>", self.api_country())
+
+    def api_country(self):
+        self.sel_country = self.select_combo.get()
+        self.response = requests.get(
+            'https://covid19.mathdro.id/api/countries/{}'.format(self.sel_country))
+        self.info = self.response
+        self.info = json.loads(self.info.text)
+
+        self.d_infected = self.info["confirmed"]["value"]
+        self.d_recovered = self.info['recovered']['value']
+        self.d_deaths = self.info['deaths']['value']
+        self.d_update = self.info['lastUpdate']
+
+        self.d_update = datetime.datetime.strptime(self.d_update, "%Y-%m-%dT%H:%M:%S.000Z")
+
+        print(self.d_infected)
+
+        self.number_infected.configure(text=self.d_infected)
+        self.number_recovered.configure(text=self.d_recovered)
+        self.number_deaths.configure(text=self.d_deaths)
 
 Application()
