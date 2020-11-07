@@ -18,7 +18,7 @@ class Application:
     def window(self):
         self.root.title("")
         self.root.resizable(width = FALSE, height = FALSE)
-        self.root.geometry("835x270")
+        self.root.geometry("898x270")
         self.root.configure(bg='#DCDCDC')
     
     def api(self):
@@ -34,7 +34,7 @@ class Application:
         self.d_update = datetime.datetime.strptime(self.d_update, "%Y-%m-%dT%H:%M:%S.000Z")
 
     def frames(self):
-        self.fr_update = Frame(self.root, width=835, height=50, bg="#ffffff", relief='flat')
+        self.fr_update = Frame(self.root, width=835, height=50, bg="#DCDCDC", relief='flat')
         self.fr_update.grid(row=0, column=0, columnspan=3, sticky=E, pady=1)
         
         self.fr_infected = Frame(self.root, width=220, height=100, bg="#ffffff", relief='flat')
